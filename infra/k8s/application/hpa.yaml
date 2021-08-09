@@ -1,0 +1,16 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  namespace: application
+  name: replacer-hpa
+  labels:
+    app: replacer
+    tier: web
+spec:
+  maxReplicas: 5
+  minReplicas: 2
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: replacer
+  targetCPUUtilizationPercentage: 80

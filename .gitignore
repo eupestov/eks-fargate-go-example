@@ -1,0 +1,12 @@
+tmp/
+
+# temp terraform artefacts
+.terraform*
+terraform.tfstate*
+
+/tilt_modules
+
+/docs/local
+
+.kind
+.helm

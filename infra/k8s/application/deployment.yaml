@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: application
+  name: replacer
+  labels:
+    app: replacer
+    tier: web
+spec:
+  selector:
+    matchLabels:
+      app: replacer
+      tier: web
+  template:
+    metadata:
+      labels:
+        app: replacer
+        tier: web
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8080"
+        prometheus.io/scrape: "true"        
+    spec:
+      containers:
+      - name: devops
+        image: epestov/replacer:0.1.0
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "250m"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
